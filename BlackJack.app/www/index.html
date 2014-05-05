@@ -1,0 +1,135 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ＢＬＡＣＫ ＪＡＣＫ</title>
+<link rel="stylesheet"
+	href="jquery.mobile-1.4.2/jquery.mobile-1.4.2.min.css" type="text/css" />
+<link rel="stylesheet"
+	href="css/mystyle01.css" type="text/css" />
+<link rel="stylesheet"
+	href="css/mystyle02.css" type="text/css" />
+<script src="js/jquery-1.11.0.min.js" type="text/javascript"></script>
+<script src="jquery.mobile-1.4.2/jquery.mobile-1.4.2.min.js"
+	type="text/javascript"></script>
+<script src="cordova.js" type="text/javascript"></script>
+<script src="http://192.168.0.22:3000/socket.io/socket.io.js"></script>
+<script src="js/myfunction01.js" type="text/javascript"></script>
+<script src="js/myfunction02.js" type="text/javascript"></script>
+<script src="js/mycommon.js" type="text/javascript"></script>
+</head> 
+<body>
+
+<div data-role="page" id="page" data-theme="b">
+	<div data-role="header">
+		<h1>ＴＯＰ</h1>
+	</div>
+  <div data-role="content">
+		<ul data-role="listview">
+			<li><a href="#page01"data-transition="slide">１ ＰＬＡＹＥＲ</a></li>
+      <!-- <li><a href="#page02"data-transition="slide">２ ＰＬＡＹＥＲＳ</a></li> -->
+			<li><a href="#page03"data-transition="slide">ＧＡＭＥ ＲＵＬＥＳ</a></li>
+			<li><a href="#help01"data-transition="slide">ＨＥＬＰ</a></li>
+		</ul>
+	</div>
+  <div align="center">
+  	<img src="img/apple-anime.gif" alt="apple" width="40" height="45">
+  	<img src="img/droid-anime.gif" alt="droid" width="40" height="45">
+  </div>
+	<div data-role="footer">
+		<h4></h4>
+	</div>
+</div>
+
+<div data-role="page" id="page01" data-theme="b">
+	<div data-role="header">
+		<h1>１ ＰＬＡＹＥＲ</h1>
+	</div>
+	<div data-role="content">
+  	<font class="init-hidden">Computer's cards</font>
+  	<canvas id="computer-canv" class="init-hidden" width="0" height=100>canvasタグをサポートしたブラウザが必要です。</canvas>
+		<font class="init-hidden">Player's cards</font>
+		<canvas id="player-canv" class="init-hidden" width="0" height=100>canvasタグをサポートしたブラウザが必要です。</canvas>
+    <div id="result01" class="init-hidden"></div>
+    <button id="btn-0101" type="button" onClick="btn_0101();">ＧＡＭＥ ＳＴＡＲＴ</button>
+    <button id="btn-0103" class="init-hidden" type="button" onClick="btn_0103();">REQUEST A CARD</button>
+    <button id="btn-0104" class="init-hidden" type="button" onClick="btn_0104();">NOT REQUEST CARD</button>
+    <button id="btn-0102" type="button" onClick="btn_0102();">ＧＡＭＥ ＥＮＤ</button>
+	</div>
+	<div data-role="footer">
+		<h4></h4>
+	</div>
+</div>
+
+<div data-role="page" id="page02" data-theme="b">
+	<div data-role="header">
+		<h1>２ ＰＬＡＹＥＲＳ</h1>
+	</div>
+	<div data-role="content">
+  	<font class="init-hidden">対戦相手のカード</font>
+  	<canvas id="opponent-canv" class="init-hidden" width="0" height=100>canvasタグをサポートしたブラウザが必要です。</canvas>
+		<font class="init-hidden">あなたのカード</font>
+		<canvas id="oneself-canv" class="init-hidden" width="0" height=100>canvasタグをサポートしたブラウザが必要です。</canvas>
+    <div id="result02" class="init-hidden"></div>
+    
+    <button id="btn-0201" type="button" onClick="btn_0201();">ＧＡＭＥ ＳＴＡＲＴ</button>
+    <button id="btn-0203" class="init-hidden" type="button" onClick="btn_0203();">REQUEST A CARD</button>
+    <button id="btn-0204" class="init-hidden" type="button" onClick="btn_0204();">NOT REQUEST CARD</button>
+    <button id="btn-0202" type="button" onClick="btn_0202();">ＧＡＭＥ ＥＮＤ</button>
+	</div>
+	<div data-role="footer">
+		<h4></h4>
+	</div>
+</div>
+
+<div data-role="page" id="page03" data-theme="b">
+	<div data-role="header">
+		<h1>ＧＡＭＥ ＲＵＬＥＳ</h1>
+	</div>
+	<div data-role="content">	
+各プレイヤーの目標は、21を超えないように手持ちのカードの点数の合計を21に近づけ、その点数がディーラーを上回ることである。<br>
+手の中のカードの点数は、カード2～10ではその数字通りの値であり、また、絵札であるK（キング）、Q（クイーン）、J（ジャック）は10と数える。<br>
+A（エース）は、手持ちのカードの合計が21を超えない範囲で11と数え、超える場合は1として数える。<br>
+	</div>
+  <form>
+  <input type="button"  value="PREVIOUS PAGE" onclick="history.back();">
+  </form>
+	<div data-role="footer">
+		<h4></h4>
+	</div>
+</div>
+
+<div data-role="page" id="help01" data-theme="b">
+	<div data-role="header">
+		<h1>ＨＥＬＰ</h1>
+	</div>
+	<div data-role="content">	
+		ヘルプなんてない。<br><br>自分でなんとかするんだ。		
+	</div>
+  <form>
+  <input type="button"  value="PREVIOUS PAGE" onclick="history.back();">
+  </form>
+	<div data-role="footer">
+		<h4></h4>
+	</div>
+</div>
+
+<div id="cards" class="hidden"></div>
+<div id="computer-cards" class="hidden"></div>
+<div id="player-cards" class="hidden"></div>
+
+<p class="hidden">サーバメッセージ</p>
+<div id="server-message" class="hidden"></div>
+<div id="server-counter" class="hidden"></div>
+
+<p class="hidden">対戦者のカード</p>
+<div id="opponent-cards" class="hidden"></div>
+<p class="hidden">自分のカード</p>
+<div id="oneself-cards" class="hidden"></div>
+<p class="hidden">画面</p>
+<div id="transition" class="hidden"></div>
+<p class="hidden">先攻・後攻</p>
+<div id="atack" class="hidden"></div>
+
+</body>
+</html>
