@@ -1,12 +1,12 @@
 /**
- * 
+ * 1Player画面用の処理
  */
 
 function btn_0101(){
 	// ゲームスタート時に表示にする。
 	var elems = document.getElementsByClassName('init-hidden');
 	for (var i = 0; i< elems.length; i++){
-			elems[i].style.display = 'block';
+		elems[i].style.display = 'block';
 	}
 	document.getElementById('result01').style.display = 'none';
 	
@@ -62,6 +62,11 @@ function btn_0103(){
 	document.getElementById('player-cards').innerText = arrayCards;
 	// カード表示
 	display_card_common01('player');
+	//  表示枚数制限（上限値を超えたら強制的にSTANDする）
+	var cards = document.getElementById('player-cards').innerHTML.split(',');
+	if (cards.length >= 4){
+		btn_0104();
+	}
 }
 
 function btn_0104(){
@@ -76,7 +81,9 @@ function btn_0104(){
 		}
 	}
 	document.getElementById('result01').innerHTML = '対戦相手の点数：' + display_score('computer') + '<br>あなたの点数：' + display_score('player') + '<br>' + get_result(display_score('computer'), display_score('player'));
-
+	
+		// 対戦相手のカードを表に表示
+		display_card_common01('computer');
 }
 
 // Computerの処理をする。
@@ -85,6 +92,10 @@ function btn_0104(){
 function computer_exec() {
 	// computerの点数を取得
 	var cards = document.getElementById('computer-cards').innerHTML.split(',');
+	// 表示枚数制限（上限値を超えたら強制的にSTANDする）
+	if (cards.length >= 4){
+		return 'false';
+	}
 	var score = 0;
 	for (var i = 0; i < cards.length; i++){
 		if (parseInt(cards[i].match(/\d+/)) > 10){
@@ -93,47 +104,35 @@ function computer_exec() {
 			score += parseInt(cards[i].match(/\d+/));
 		}
 	}
+	console.log('computer_exec:score:' + score);
+
   // 目標の点数
   var target_score = 19;
   
   // カードをめくるか否かを判断する。
-  // score >= target_score の場合はカードを引かない
-  if (score >= target_score){
-    return 'false';
-  
-    // $score < $target_score-9 の場合はカードを引く。
-  } else if (score < target_score - 9) {
+	// 合計点によりカードを引く確率を変化させる配列を作る。要素は10個
+	var prob_array = [];
+	for (var i = 0; i < 10 ;i++){
+		if (i < target_score - score) {
+			prob_array.push('1');
+		} else {
+			prob_array.push('0');
+		}
+	}
+	console.log('compyter_exec:prob_array' + prob_array);
+	var randomIndex = Math.floor(Math.random() * prob_array.length);
+	console.log('randomIndex:' + randomIndex);
+	
+	// 0ならカードを引かない。1ならカードを引く。
+	if (prob_array[randomIndex] == 0){
+		console.log('compyter_exec:prob_array[randomIndex] = 0');
+		return 'false';
+	} else {
+		console.log('compyter_exec:prob_array[randomIndex] = 1');
 		// html要素からカードを取得
 		var arrayCards = document.getElementById('computer-cards').innerHTML.split(',');
 		arrayCards.push(get_random());
 		// html要素に入れる
 		document.getElementById('computer-cards').innerText = arrayCards;
-		// カード表示
-		display_card_common01('computer');
-    
-    // 合計点によりカードを引く確率を変化させる配列を作る。要素は10個。
-  } else {
-    var prob_array = [];
-    for (var i = 0; i < 10 ;i++){
-      if (i < target_score - score) {
-        prob_array.push('1');
-      } else {
-        prob_array.push('0');
-      }
-    }
-		
-		var randomIndex = Math.floor(Math.random() * prob_array.length);
-    // 0ならカードを引かない。1ならカードを引く。
-    if (prob_array[randomIndex] == 0){
-      return 'false';
-    } else{
-		// html要素からカードを取得
-		var arrayCards = document.getElementById('computer-cards').innerHTML.split(',');
-		arrayCards.push(get_random());
-		// html要素に入れる
-		document.getElementById('computer-cards').innerText = arrayCards;
-		// カード表示
-		display_card_common01('computer');
-    }
-  }
+	}
 }
