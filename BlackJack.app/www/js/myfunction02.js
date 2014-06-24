@@ -1,5 +1,6 @@
 /**
  * 2Player画面用の処理
+ * Socket.IOバージョン1.0だと再接続時に不具合がある
  */
 
 var socket;
